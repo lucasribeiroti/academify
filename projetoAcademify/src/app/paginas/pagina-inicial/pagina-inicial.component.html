@@ -1,5 +1,16 @@
-<h1>Bem-vindo ao Academify</h1>
-<nav>
-  <a routerLink="/estudantes">Listar Estudantes</a> |
-  <a routerLink="/estudantes/adicionar">Adicionar Estudante</a>
-</nav>
+<div class="container">
+  <h2>Bem-vindo ao Sistema de Gerenciamento de Estudantes!</h2>
+  <mat-card class="info-card">
+    <mat-card-header>
+      <mat-card-title>Estudantes Cadastrados</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Total de estudantes registrados: <strong>{{ totalEstudantes }}</strong>
+      </p>
+      <button mat-raised-button color="primary" routerLink="/estudantes">
+        Ver Estudantes
+      </button>
+    </mat-card-content>
+  </mat-card>
+</div>

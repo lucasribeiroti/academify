@@ -1,43 +1,52 @@
-import { Component, OnInit } from '@angular/core';
-import { AlunoService } from '../../services/aluno.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
+import { AlunoService } from '../../services/aluno/aluno.service';
 
 @Component({
   selector: 'app-listar-estudantes',
   templateUrl: './listar-estudantes.component.html',
-  styleUrls: ['./listar-estudantes.component.css']
+  styleUrls: ['./listar-estudantes.component.scss'],
 })
 export class ListarEstudantesComponent implements OnInit {
-  alunos: any[] = []; // Lista de alunos
-  displayedColumns: string[] = ['id', 'nome', 'acoes']; // Colunas exibidas na tabela
+  displayedColumns: string[] = ['matricula', 'nome', 'acoes'];
+  dataSource = new MatTableDataSource<any>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private alunoService: AlunoService, private router: Router) {}
 
   ngOnInit(): void {
-    this.carregarAlunos();
+    this.carregarEstudantes();
   }
 
-  // Método para carregar a lista de alunos
-  carregarAlunos(): void {
+  carregarEstudantes(): void {
     this.alunoService.findAll().subscribe((data) => {
-      this.alunos = data;
+      this.dataSource.data = data;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     });
   }
 
-  // Navegar para a tela de visualizar aluno
-  visualizar(id: number): void {
-    this.router.navigate([`/estudantes/visualizar/${id}`]);
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  // Navegar para a tela de editar aluno
-  editar(id: number): void {
-    this.router.navigate([`/estudantes/editar/${id}`]);
+  visualizar(matricula: string): void {
+    this.router.navigate([`/estudantes/visualizar/${matricula}`]);
   }
 
-  // Excluir um aluno e recarregar a lista
-  excluir(id: number): void {
-    this.alunoService.delete(id).subscribe(() => {
-      this.carregarAlunos();
+  editar(matricula: string): void {
+    this.router.navigate([`/estudantes/editar/${matricula}`]);
+  }
+
+  excluir(matricula: string): void {
+    this.alunoService.delete(matricula).subscribe(() => {
+      this.carregarEstudantes();
     });
   }
 }

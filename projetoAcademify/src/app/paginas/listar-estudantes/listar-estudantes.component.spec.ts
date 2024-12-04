@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ListarEstudantesComponent } from './listar-estudantes.component';
-import { AlunoService } from '../../services/aluno.service';
+import { AlunoService } from '../../services/aluno/aluno.service';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -20,8 +20,8 @@ describe('ListarEstudantesComponent', () => {
       imports: [HttpClientTestingModule],
       providers: [
         { provide: AlunoService, useValue: alunoServiceSpy },
-        { provide: Router, useValue: routerSpy }
-      ]
+        { provide: Router, useValue: routerSpy },
+      ],
     }).compileComponents();
 
     alunoServiceMock = TestBed.inject(AlunoService) as jasmine.SpyObj<AlunoService>;
@@ -38,39 +38,39 @@ describe('ListarEstudantesComponent', () => {
 
   it('should load students on init', () => {
     const mockStudents = [
-      { id: 1, nome: 'João Silva' },
-      { id: 2, nome: 'Maria Souza' }
+      { matricula: '123', nome: 'João Silva' },
+      { matricula: '456', nome: 'Maria Souza' },
     ];
     alunoServiceMock.findAll.and.returnValue(of(mockStudents));
 
-    component.carregarAlunos();
+    component.carregarEstudantes();
 
-    expect(component.alunos).toEqual(mockStudents);
+    expect(component.dataSource.data).toEqual(mockStudents);
     expect(alunoServiceMock.findAll).toHaveBeenCalled();
   });
 
   it('should navigate to view student on visualizar', () => {
-    const studentId = 1;
-    component.visualizar(studentId);
+    const studentMatricula = '123';
+    component.visualizar(studentMatricula);
 
-    expect(routerMock.navigate).toHaveBeenCalledWith([`/estudantes/visualizar/${studentId}`]);
+    expect(routerMock.navigate).toHaveBeenCalledWith([`/estudantes/visualizar/${studentMatricula}`]);
   });
 
   it('should navigate to edit student on editar', () => {
-    const studentId = 2;
-    component.editar(studentId);
+    const studentMatricula = '456';
+    component.editar(studentMatricula);
 
-    expect(routerMock.navigate).toHaveBeenCalledWith([`/estudantes/editar/${studentId}`]);
+    expect(routerMock.navigate).toHaveBeenCalledWith([`/estudantes/editar/${studentMatricula}`]);
   });
 
   it('should call delete service and reload students on excluir', () => {
-    const studentId = 3;
+    const studentMatricula = '789';
     alunoServiceMock.delete.and.returnValue(of({}));
 
-    spyOn(component, 'carregarAlunos');
-    component.excluir(studentId);
+    spyOn(component, 'carregarEstudantes');
+    component.excluir(studentMatricula);
 
-    expect(alunoServiceMock.delete).toHaveBeenCalledWith(studentId);
-    expect(component.carregarAlunos).toHaveBeenCalled();
+    expect(alunoServiceMock.delete).toHaveBeenCalledWith(studentMatricula);
+    expect(component.carregarEstudantes).toHaveBeenCalled();
   });
 });

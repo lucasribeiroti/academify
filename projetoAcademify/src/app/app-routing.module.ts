@@ -7,15 +7,17 @@ import { EditarEstudantesComponent } from './paginas/editar-estudantes/editar-es
 import { VisualizarEstudantesComponent } from './paginas/visualizar-estudantes/visualizar-estudantes.component';
 
 const routes: Routes = [
-  { path: '', component: PaginaInicialComponent },
+  { path: '', redirectTo: '/pagina-inicial', pathMatch: 'full' },
+  { path: 'pagina-inicial', component: PaginaInicialComponent },
   { path: 'estudantes', component: ListarEstudantesComponent },
   { path: 'estudantes/adicionar', component: AdicionarEstudanteComponent },
   { path: 'estudantes/editar/:id', component: EditarEstudantesComponent },
   { path: 'estudantes/visualizar/:id', component: VisualizarEstudantesComponent },
+  { path: '**', redirectTo: '/pagina-inicial' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

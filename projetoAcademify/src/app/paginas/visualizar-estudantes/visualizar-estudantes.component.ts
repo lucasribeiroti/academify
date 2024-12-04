@@ -1,19 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AlunoService } from '../../services/aluno/aluno.service';
 
 @Component({
   selector: 'app-visualizar-estudantes',
   templateUrl: './visualizar-estudantes.component.html',
-  styleUrls: ['./visualizar-estudantes.component.css']
+  styleUrls: ['./visualizar-estudantes.component.scss'],
 })
 export class VisualizarEstudantesComponent implements OnInit {
-  student: { id: number; name: string; birthDate: string } | undefined;
+  student: { matricula: string; nome: string; nascimento: string } | null = null;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private alunoService: AlunoService
+  ) {}
 
   ngOnInit(): void {
-    // Simulando a recuperação do ID e dados do estudante
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.student = { id, name: 'João Silva', birthDate: '2000-01-01' }; // Dados fictícios
+    const matricula = this.route.snapshot.paramMap.get('id');
+    if (matricula) {
+      this.alunoService.findById(matricula).subscribe((data) => {
+        this.student = data;
+      });
+    }
   }
 }

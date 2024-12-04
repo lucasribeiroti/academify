@@ -1,25 +1,51 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlunoService } from '../../services/aluno/aluno.service';
 
 @Component({
   selector: 'app-editar-estudantes',
   templateUrl: './editar-estudantes.component.html',
-  styleUrls: ['./editar-estudantes.component.css']
+  styleUrls: ['./editar-estudantes.component.scss'],
 })
 export class EditarEstudantesComponent implements OnInit {
-  student = { id: 0, name: '', birthDate: '' };
+  student = { matricula: '', nome: '', nascimento: '' };
+  validationErrors: { nome?: string; nascimento?: string } = {};
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private alunoService: AlunoService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // Simulando a recuperação do ID e dados do estudante
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.student = { id, name: 'João Silva', birthDate: '2000-01-01' }; // Dados fictícios
+    const id = this.route.snapshot.paramMap.get('id'); // id já é uma string
+    if (id) {
+      this.alunoService.findById(id).subscribe({
+        next: (data) => {
+          this.student = data;
+        },
+        error: (err) => {
+          console.error('Erro ao carregar os dados do estudante:', err);
+        },
+      });
+    }
   }
 
   onSubmit(): void {
-    console.log('Student updated:', this.student);
-    this.router.navigate(['/estudantes']);
+    this.validationErrors = {}; // Resetar erros de validação
+    this.alunoService.update(this.student).subscribe({
+      next: () => {
+        console.log('Estudante atualizado:', this.student);
+        this.router.navigate(['/estudantes']);
+      },
+      error: (err) => {
+        if (err.error) {
+          this.validationErrors = err.error;
+        } else {
+          console.error('Erro desconhecido ao atualizar estudante:', err);
+        }
+      },
+    });
   }
 
   onCancel(): void {

@@ -1,0 +1,27 @@
+/* app.component.scss */
+
+mat-toolbar {
+  background-color: #1e88e5;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+nav a {
+  color: #ffffff;
+  text-decoration: none;
+  margin-right: 15px;
+  font-weight: bold;
+}
+
+nav a.active-link {
+  text-decoration: underline;
+}
+
+.content {
+  padding: 20px;
+}

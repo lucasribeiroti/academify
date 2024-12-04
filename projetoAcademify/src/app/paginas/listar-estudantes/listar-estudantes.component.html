@@ -1,28 +1,35 @@
-<h2>Lista de Alunos</h2>
-<table mat-table [dataSource]="alunos" class="mat-elevation-z8">
-  <!-- ID Column -->
-  <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef> ID </th>
-    <td mat-cell *matCellDef="let aluno"> {{ aluno.id }} </td>
-  </ng-container>
+<div class="container">
+  <h2>Lista de Estudantes</h2>
+  <input
+    matInput
+    (keyup)="applyFilter($event)"
+    placeholder="Buscar por nome ou matrícula"
+    class="filter-input"
+  />
 
-  <!-- Nome Column -->
-  <ng-container matColumnDef="nome">
-    <th mat-header-cell *matHeaderCellDef> Nome </th>
-    <td mat-cell *matCellDef="let aluno"> {{ aluno.nome }} </td>
-  </ng-container>
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <ng-container matColumnDef="matricula">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Matrícula </th>
+      <td mat-cell *matCellDef="let student"> {{ student.matricula }} </td>
+    </ng-container>
 
-  <!-- Ações Column -->
-  <ng-container matColumnDef="acoes">
-    <th mat-header-cell *matHeaderCellDef> Ações </th>
-    <td mat-cell *matCellDef="let aluno">
-      <button mat-button (click)="visualizar(aluno.id)">Visualizar</button>
-      <button mat-button (click)="editar(aluno.id)">Editar</button>
-      <button mat-button color="warn" (click)="excluir(aluno.id)">Excluir</button>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="nome">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
+      <td mat-cell *matCellDef="let student"> {{ student.nome }} </td>
+    </ng-container>
 
-  <!-- Header and Row Definitions -->
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+    <ng-container matColumnDef="acoes">
+      <th mat-header-cell *matHeaderCellDef> Ações </th>
+      <td mat-cell *matCellDef="let student">
+        <button mat-button (click)="visualizar(student.matricula)">Visualizar</button>
+        <button mat-button (click)="editar(student.matricula)">Editar</button>
+        <button mat-button color="warn" (click)="excluir(student.matricula)">Excluir</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

@@ -1,5 +1,16 @@
-<h2>Detalhes do Estudante</h2>
-<p><strong>ID:</strong> {{ student?.id }}</p>
-<p><strong>Nome:</strong> {{ student?.name }}</p>
-<p><strong>Data de Nascimento:</strong> {{ student?.birthDate }}</p>
-<button routerLink="/estudantes">Voltar</button>
+<div class="container">
+    <h2>Detalhes do Estudante</h2>
+    <mat-card class="student-details-card">
+      <mat-card-content>
+        <p><strong>Matrícula:</strong> {{ student?.matricula }}</p>
+        <p><strong>Nome:</strong> {{ student?.nome }}</p>
+        <p><strong>Data de Nascimento:</strong> {{ student?.nascimento | date }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" routerLink="/estudantes">
+          Voltar
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  
