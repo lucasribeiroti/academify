@@ -7,12 +7,10 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AlunoService {
-  // URL do backend configurada corretamente para o Spring Boot rodando em localhost:8080
   private apiUrl = 'http://localhost:8080/api/aluno';
 
   constructor(private http: HttpClient) {}
 
-  // Buscar todos os alunos
   findAll(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}`).pipe(
       catchError((error) => {
@@ -23,7 +21,6 @@ export class AlunoService {
     );
   }
 
-  // Buscar aluno pelo ID
   findById(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`).pipe(
       catchError((error) => {
@@ -34,7 +31,6 @@ export class AlunoService {
     );
   }
 
-  // Criar novo aluno
   save(aluno: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}`, aluno).pipe(
       catchError((error) => {
@@ -45,7 +41,6 @@ export class AlunoService {
     );
   }
 
-  // Atualizar aluno existente
   update(aluno: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}`, aluno).pipe(
       catchError((error) => {
@@ -56,7 +51,6 @@ export class AlunoService {
     );
   }
 
-  // Deletar aluno pelo ID
   delete(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`).pipe(
       catchError((error) => {
@@ -67,7 +61,6 @@ export class AlunoService {
     );
   }
 
-  // Contar total de alunos
   count(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/total`).pipe(
       catchError((error) => {

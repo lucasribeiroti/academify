@@ -18,7 +18,7 @@ export class EditarEstudantesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id'); // id já é uma string
+    const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.alunoService.findById(id).subscribe({
         next: (data) => {
@@ -32,7 +32,7 @@ export class EditarEstudantesComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.validationErrors = {}; // Resetar erros de validação
+    this.validationErrors = {};
     this.alunoService.update(this.student).subscribe({
       next: () => {
         console.log('Estudante atualizado:', this.student);

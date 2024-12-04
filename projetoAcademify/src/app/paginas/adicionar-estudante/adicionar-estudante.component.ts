@@ -15,7 +15,7 @@ export class AdicionarEstudanteComponent {
 
   onSubmit(): void {
     console.log('Formulário enviado:', this.aluno);
-    this.validationErrors = {}; // Resetando mensagens de erro
+    this.validationErrors = {};
     this.alunoService.save(this.aluno).subscribe({
       next: () => {
         console.log('Aluno salvo com sucesso:', this.aluno);
